@@ -144,6 +144,23 @@ config FB_MSM_MDSS_FRC_DEBUG
 	statistics and check whether its output pattern matches expected
 	cadence.
 
+<<<<<<< HEAD
+=======
+config FB_MSM_MDSS_KCAL_CTRL
+	depends on FB_MSM_MDSS
+	bool "MDSS color control"
+	---help---
+	  Enable sysfs for post-processing control of mdss-mdp5 display
+	  controllers in MDSS.
+
+config KLAPSE
+    bool CONFIG_KLAPSE
+    depends on FB_MSM_MDSS
+    default n
+    help
+        A simple rgb dynamic lapsing module similar to LineageOS' livedisplay
+
+>>>>>>> 5c0d73211534... Introducing KLapse - A kernel level livedisplay module v4.0
 endif
 
 config WPONIT_ADJUST_FUN
