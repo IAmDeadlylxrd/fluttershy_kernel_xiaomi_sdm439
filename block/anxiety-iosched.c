@@ -29,7 +29,8 @@ struct anxiety_data {
 	uint8_t read_ratio;
 };
 
-static void anxiety_merged_requests(struct request_queue *q, struct request *rq, struct request *next)
+static void anxiety_merged_requests(struct request_queue *q, struct request *rq,
+		struct request *next)
 {
 	rq_fifo_clear(next);
 }
@@ -97,7 +98,8 @@ static struct request *anxiety_latter_request(struct request_queue *q, struct re
 	return list_next_entry(rq, queuelist);
 }
 
-static int anxiety_init_queue(struct request_queue *q, struct elevator_type *elv)
+static int anxiety_init_queue(struct request_queue *q,
+		struct elevator_type *elv)
 {
 	struct anxiety_data *adata;
 	struct elevator_queue *eq = elevator_alloc(q, elv);
@@ -137,7 +139,8 @@ static ssize_t anxiety_read_ratio_show(struct elevator_queue *e, char *page)
 	return snprintf(page, PAGE_SIZE, "%u\n", adata->read_ratio);
 }
 
-static ssize_t anxiety_read_ratio_store(struct elevator_queue *e, const char *page, size_t count)
+static ssize_t anxiety_read_ratio_store(struct elevator_queue *e,
+		const char *page, size_t count)
 {
 	struct anxiety_data *adata = e->elevator_data;
 	int ret;
@@ -150,7 +153,8 @@ static ssize_t anxiety_read_ratio_store(struct elevator_queue *e, const char *pa
 }
 
 static struct elv_fs_entry anxiety_attrs[] = {
-	__ATTR(read_ratio, 0644, anxiety_read_ratio_show, anxiety_read_ratio_store),
+	__ATTR(read_ratio, 0644, anxiety_read_ratio_show,
+			anxiety_read_ratio_store),
 	__ATTR_NULL
 };
 
