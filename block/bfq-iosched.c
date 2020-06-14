@@ -5045,6 +5045,7 @@ static ssize_t bfq_wr_max_time_show(struct elevator_queue *e, char *page)
 		       jiffies_to_msecs(bfq_wr_duration(bfqd)));
 }
 
+#ifdef CONFIG_BFQ_EXPORT_WEIGHTS
 static ssize_t bfq_weights_show(struct elevator_queue *e, char *page)
 {
 	struct bfq_queue *bfqq;
@@ -5087,6 +5088,7 @@ static ssize_t bfq_weights_show(struct elevator_queue *e, char *page)
 
 	return num_char;
 }
+#endif
 
 #define SHOW_FUNCTION(__FUNC, __VAR, __CONV)				\
 static ssize_t __FUNC(struct elevator_queue *e, char *page)		\
@@ -5183,11 +5185,13 @@ USEC_STORE_FUNCTION(bfq_slice_idle_us_store, &bfqd->bfq_slice_idle, 0,
 #undef USEC_STORE_FUNCTION
 
 /* do nothing for the moment */
+#ifdef CONFIG_BFQ_EXPORT_WEIGHTS
 static ssize_t bfq_weights_store(struct elevator_queue *e,
 				    const char *page, size_t count)
 {
 	return count;
 }
+#endif
 
 static ssize_t bfq_max_budget_store(struct elevator_queue *e,
 				    const char *page, size_t count)
@@ -5285,7 +5289,9 @@ static struct elv_fs_entry bfq_attrs[] = {
 	BFQ_ATTR(wr_min_idle_time),
 	BFQ_ATTR(wr_min_inter_arr_async),
 	BFQ_ATTR(wr_max_softrt_rate),
+#ifdef CONFIG_BFQ_EXPORT_WEIGHTS
 	BFQ_ATTR(weights),
+#endif
 	__ATTR_NULL
 };
 
