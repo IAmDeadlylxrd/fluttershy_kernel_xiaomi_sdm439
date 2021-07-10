@@ -92,7 +92,7 @@ cp $KERN_IMG zImage
 cp $OUTDIR/arch/arm64/boot/dtbo.img $ZIP_DIR
 make normal &>/dev/null
 cd ..
-VER=v1.2
+VER=v2.0
 ZIP_NAME="IW-Fluttershy-Kernel-SDM439-$VER.zip"
 cp IW/$ZIP_NAME product/
 # Build end

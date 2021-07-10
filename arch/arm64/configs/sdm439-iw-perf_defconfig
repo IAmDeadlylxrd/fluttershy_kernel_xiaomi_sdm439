@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-FluttershyKernel-v1.2-IW-FIX"
+CONFIG_LOCALVERSION="-FluttershyKernel-v2.0-IW"
 CONFIG_LOCALVERSION_AUTO=n
 
 #~~~~~~~~~~~~~~~~~#
