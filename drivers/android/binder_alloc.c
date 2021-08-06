@@ -18,7 +18,7 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/list.h>
-#include <linux/sched/mm.h>
+#include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/rtmutex.h>
 #include <linux/rbtree.h>
@@ -739,7 +739,7 @@ int binder_alloc_mmap_handler(struct binder_alloc *alloc,
 	binder_insert_free_buffer(alloc, buffer);
 	alloc->free_async_space = alloc->buffer_size / 2;
 	binder_alloc_set_vma(alloc, vma);
-	mmgrab(alloc->vma_vm_mm);
+	atomic_inc(&alloc->vma_vm_mm->mm_count);
 
 	return 0;
 
@@ -954,8 +954,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
 	mm = alloc->vma_vm_mm;
 	if (!mmget_not_zero(mm))
 		goto err_mmget;
-	if (!down_read_trylock(&mm->mmap_sem))
-		goto err_down_read_mmap_sem_failed;
+	if (!down_write_trylock(&mm->mmap_sem))
+		goto err_down_write_mmap_sem_failed;
 	vma = binder_alloc_get_vma(alloc);
 
 	list_lru_isolate(lru, item);
@@ -964,12 +964,12 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
 	if (vma) {
 		trace_binder_unmap_user_start(alloc, index);
 
-		zap_page_range(vma, page_addr, PAGE_SIZE);
+		zap_page_range(vma, page_addr, PAGE_SIZE, NULL);
 
 		trace_binder_unmap_user_end(alloc, index);
 	}
-	up_read(&mm->mmap_sem);
-	mmput_async(mm);
+	up_write(&mm->mmap_sem);
+	mmput(mm);
 
 	trace_binder_unmap_kernel_start(alloc, index);
 
@@ -982,7 +982,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
 	mutex_unlock(&alloc->mutex);
 	return LRU_REMOVED_RETRY;
 
-err_down_read_mmap_sem_failed:
+err_down_write_mmap_sem_failed:
 	mmput_async(mm);
 err_mmget:
 err_page_already_freed:
