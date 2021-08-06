@@ -22,8 +22,8 @@ echo "~~~~~~~~~~~~~~~~~~~~~"
 echo -e "${restore}"
 
 # Clone AnyKernel
-git clone https://github.com/IAmDeadlylxrd/AnyKernel3 -b moonlight AK
-git clone https://github.com/IAmDeadlylxrd/AnyKernel3 -b moonlight_iw AKIW
+git clone https://github.com/IAmDeadlylxrd/AnyKernel3 -b fluttershy_sdm439 AK
+git clone https://github.com/IAmDeadlylxrd/AnyKernel3 -b fluttershy_sdm439_iw AKIW
 
 # Clone proton-clang
 git clone --depth=1 https://github.com/silont-project/silont-clang ~/toolchain/clang
