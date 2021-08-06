@@ -5,7 +5,7 @@
 #define KLAPSE_MDSS 1
 
 /* set_rgb_slider : Interface function for brightness-mode */
-extern void set_rgb_slider(u32 bl_lvl);
+// extern void set_rgb_slider(u32 bl_lvl);
 
 /* This file uses generalised K_### defines
  * The interpretation should be the respective color's var
